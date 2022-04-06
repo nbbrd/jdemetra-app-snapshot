@@ -9,10 +9,8 @@ _Note that this snapshot is available for test only and should not be used in pr
 
 JDemetra+ runs on any operating systems that support the Java VM (Virtual Machine) such as Microsoft **Windows**, **Solaris** OS, Apple **macOS**, **Ubuntu** and other various **Linux** distributions.
 
-JDemetra+ requires a **Java SE Runtime Environment (JRE) version 8 or later** to run on such as **OpenJDK**. You can download a free, binary distribution of the OpenJDK at one of the following provider:
-[Zulu JDK](https://www.azul.com/downloads/zulu/),
-[Adoptium](https://adoptium.net/),
-[Amazon Corretto](https://aws.amazon.com/corretto/).
+JDemetra+ requires a **Java SE Runtime Environment (JRE) version 17 or later** to run on such as **OpenJDK**. You can download a free, binary distribution of the OpenJDK at one of the following provider:
+[Zulu JDK](https://www.azul.com/downloads/zulu/), [Adoptium](https://adoptium.net/), [Amazon Corretto](https://aws.amazon.com/corretto/).
 
 ## Installation
 
