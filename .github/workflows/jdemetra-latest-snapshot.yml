@@ -48,7 +48,7 @@ jobs:
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
         with:
-          name: ${{ github.action }}
+          name: ${{ github.workflow }}
           bodyFile: 'README.md'
           allowUpdates: true
           tag: 'latest'
