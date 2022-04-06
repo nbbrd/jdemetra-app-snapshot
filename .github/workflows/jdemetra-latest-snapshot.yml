@@ -1,4 +1,4 @@
-name: Lastest JDemetra+ snapshot
+name: JDemetra+ lastest snapshot
 
 on: [ workflow_dispatch ]
 
@@ -37,13 +37,12 @@ jobs:
           git clone -b v3.0.0 --single-branch --depth=1 https://github.com/jdemetra/jdemetra-app.git jdemetra-app-v3
           mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
 
-      - name: Create pre-release and upload assets
-        uses: xresloader/upload-to-github-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release and upload assets
+        uses: ncipollo/release-action@v1
         with:
-          prerelease: true
-          overwrite: true
-          draft: false
-          tag_name : 'latest'
-          file: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          name: 'JDemetra latest snapshot'
+          body: '**Installation:** ...'
+          allowUpdates: true
+          tag: 'latest'
+          artifacts: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
