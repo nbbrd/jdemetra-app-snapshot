@@ -45,7 +45,7 @@ jobs:
         run: |
           mv ./jdemetra-app-v3/demetra-desktop-app/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(date +%Y%m%d%H%M%S)-bin.zip"
 
-        - name: Create release and upload assets
+      - name: Create release and upload assets
         uses: ncipollo/release-action@v1
         with:
           name: ${{ github.action }}
