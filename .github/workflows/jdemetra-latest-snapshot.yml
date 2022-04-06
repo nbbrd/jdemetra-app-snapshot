@@ -41,13 +41,12 @@ jobs:
           mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
 
       - name: Create release and upload assets
-        uses: WebFreak001/deploy-nightly@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          upload_url: https://uploads.github.com/repos/nbbrd/jdemetra-app-snapshot/releases/63740039/assets{?name,label}
-          release_id: 63740039
-          asset_path: './jdemetra-app-v3/demetra-desktop-app/target/jdemetra-3.0.0-SNAPSHOT-bin.zip'
-          asset_name: jdemetra-nightly-$$-bin.zip
-          asset_content_type: application/zip
-          max_releases: 7
+          name: 'JDemetra latest snapshot'
+          bodyFile: 'README.md'
+          allowUpdates: true
+          tag: 'latest'
+          removeArtifacts: true
+          artifacts: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
