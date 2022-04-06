@@ -37,7 +37,7 @@ jobs:
           git clone -b v3.0.0 --single-branch --depth=1 https://github.com/jdemetra/jdemetra-app.git jdemetra-app-v3
           mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
 
-      - name: Create draft release and upload assets
+      - name: Create pre-release and upload assets
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
