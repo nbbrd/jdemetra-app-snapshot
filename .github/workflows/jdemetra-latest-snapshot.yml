@@ -1,6 +1,9 @@
-name: JDemetra+ lastest snapshot
+name: JDemetra+ latest snapshot
 
-on: [ workflow_dispatch ]
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # run at 2 AM UTC
 
 jobs:
   snapshot-job:
@@ -38,11 +41,13 @@ jobs:
           mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
 
       - name: Create release and upload assets
-        uses: ncipollo/release-action@v1
+        uses: WebFreak001/deploy-nightly@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: 'JDemetra latest snapshot'
-          body: '**Installation:** ...'
-          allowUpdates: true
-          tag: 'latest'
-          artifacts: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: https://uploads.github.com/repos/nbbrd/jdemetra-app-snapshot/releases/63740039/assets{?name,label}
+          release_id: 63740039
+          asset_path: './jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          asset_name: jdemetra-nightly-$$-bin.zip
+          asset_content_type: application/zip
+          max_releases: 7
