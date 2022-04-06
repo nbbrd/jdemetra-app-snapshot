@@ -41,13 +41,17 @@ jobs:
           git clone -b v3.0.0 --single-branch --depth=1 https://github.com/jdemetra/jdemetra-app.git jdemetra-app-v3
           mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
 
-      - name: Create release and upload assets
+      -name: Add timestamp to main asset
+        run: |
+          mv ./jdemetra-app-v3/demetra-desktop-app/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(date +%Y%m%d%H%M%S)-bin.zip"
+
+        - name: Create release and upload assets
         uses: ncipollo/release-action@v1
         with:
-          name: 'JDemetra latest snapshot'
+          name: ${{ github.action }}
           bodyFile: 'README.md'
           allowUpdates: true
           tag: 'latest'
           removeArtifacts: true
-          artifacts: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          artifacts: './jdemetra-*-bin.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
