@@ -47,7 +47,7 @@ jobs:
         with:
           upload_url: https://uploads.github.com/repos/nbbrd/jdemetra-app-snapshot/releases/63740039/assets{?name,label}
           release_id: 63740039
-          asset_path: './jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
+          asset_path: './jdemetra-app-v3/demetra-desktop-app/target/jdemetra-3.0.0-SNAPSHOT-bin.zip'
           asset_name: jdemetra-nightly-$$-bin.zip
           asset_content_type: application/zip
           max_releases: 7
