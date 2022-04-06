@@ -45,4 +45,5 @@ jobs:
           prerelease: true
           overwrite: true
           draft: false
+          tag_name : 'latest'
           file: 'jdemetra-app-v3/demetra-desktop-app/target/jdemetra-*-bin.zip'
