@@ -54,8 +54,8 @@ jobs:
 
       - name: Add timestamp to assets names
         run: |
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
