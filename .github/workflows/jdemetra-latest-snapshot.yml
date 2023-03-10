@@ -31,19 +31,14 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - name: Build jdemetra-core v3 snapshots
+      - name: Build jd3-main snapshots
         run: |
-          git clone -b v3.0.0 --single-branch --depth=1 https://github.com/jdemetra/jdemetra-core.git jdemetra-core-v3
-          mvn -B install -DskipTests=true -f ./jdemetra-core-v3/pom.xml
+          git clone -b develop --single-branch --depth=1 https://github.com/jdemetra/jd3-main.git jd3-main
+          mvn -B install -Pfast-build -DskipTests -T1C -f ./jd3-main/pom.xml
 
-      - name: Build jdemetra-app v3 snapshots
+      - name: Add timestamp to main asset name
         run: |
-          git clone -b v3.0.0 --single-branch --depth=1 https://github.com/jdemetra/jdemetra-app.git jdemetra-app-v3
-          mvn -B install -DskipTests=true -f ./jdemetra-app-v3/pom.xml
-
-      - name: Add timestamp to main asset
-        run: |
-          mv ./jdemetra-app-v3/demetra-desktop-app/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(date +%Y%m%d%H%M%S)-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(date +%Y%m%d%H%M%S)-bin.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
