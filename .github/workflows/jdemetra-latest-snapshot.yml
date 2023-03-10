@@ -45,9 +45,11 @@ jobs:
           zip -r jdemetra-3.0.0-SNAPSHOT-bin-windows.zip nbdemetra
           popd
 
+      - name: Setup Timestamp
+        run: echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
       - name: Add timestamp to assets names
         run: |
-          echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
           mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
           mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
 
