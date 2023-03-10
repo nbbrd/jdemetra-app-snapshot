@@ -31,18 +31,23 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
+      - name: Setup Timestamp
+        run: | 
+          timestamp=$(date +%Y%m%d%H%M%S)
+          echo "$(timestamp)"
+
+      - name: Download Windows JRE
+        run: |
+          curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip | tar -xz -C ./jre --strip-components=1
+
       - name: Build jd3-main snapshots
         run: |
           git clone -b develop --single-branch --depth=1 https://github.com/jdemetra/jd3-main.git jd3-main
           mvn -B install -Pfast-build -DskipTests -T1C -f ./jd3-main/pom.xml
 
-      - name: Setup timestamp
-        run: timestamp=$(date +%Y%m%d%H%M%S)
-
       - name: Create asset with bundled Windows JRE
         run: |
-          mkdir -p ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra/jre
-          curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip | tar -xz -C ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra/jre --strip-components=1
+          mv ./jre ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
           zip -r ./jdemetra-3.0.0-SNAPSHOT+$(timestamp)-bin-windows.zip ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
 
       - name: Add timestamp to main asset name
