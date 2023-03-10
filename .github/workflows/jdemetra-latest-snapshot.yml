@@ -34,11 +34,10 @@ jobs:
       - name: Setup Timestamp
         run: | 
           timestamp=$(date +%Y%m%d%H%M%S)
-          echo "$(timestamp)"
+          echo "$timestamp"
 
       - name: Download Windows JRE
-        run: |
-          curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip | tar -xz -C ./jre --strip-components=1
+        run: curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip -o jre.zip
 
       - name: Build jd3-main snapshots
         run: |
@@ -47,12 +46,12 @@ jobs:
 
       - name: Create asset with bundled Windows JRE
         run: |
-          mv ./jre ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
-          zip -r ./jdemetra-3.0.0-SNAPSHOT+$(timestamp)-bin-windows.zip ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
+          unzip ./jre.zip -d ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
+          zip -r ./jdemetra-3.0.0-SNAPSHOT+$timestamp-bin-windows.zip ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
 
       - name: Add timestamp to main asset name
         run: |
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(timestamp)-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$timestamp-bin.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
