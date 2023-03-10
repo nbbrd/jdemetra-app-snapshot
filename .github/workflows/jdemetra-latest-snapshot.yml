@@ -48,7 +48,7 @@ jobs:
         run: |
           unzip ./jre.zip -d ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
           pushd ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target
-          echo "jdkhome=jdk-17.0.6+10-jre" >> etc/nbdemetra.conf
+          echo "jdkhome=jdk-17.0.6+10-jre" >> nbdemetra/etc/nbdemetra.conf
           zip -r ./jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip nbdemetra
           popd
 
