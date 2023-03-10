@@ -34,7 +34,7 @@ jobs:
       - name: Build jd3-main snapshots
         run: |
           git clone -b develop --single-branch --depth=1 https://github.com/jdemetra/jd3-main.git jd3-main
-          mvn -B install -Pfast-build -DskipTests -T1C -f ./jd3-main/pom.xml
+          mvn -B package -Pfast-build -T1C -f ./jd3-main/pom.xml
 
       - name: Create asset with bundled Windows JRE
         run: |
