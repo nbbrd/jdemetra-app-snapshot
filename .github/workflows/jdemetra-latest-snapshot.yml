@@ -36,9 +36,18 @@ jobs:
           git clone -b develop --single-branch --depth=1 https://github.com/jdemetra/jd3-main.git jd3-main
           mvn -B install -Pfast-build -DskipTests -T1C -f ./jd3-main/pom.xml
 
+      - name: Setup timestamp
+        run: timestamp=$(date +%Y%m%d%H%M%S)
+
+      - name: Create asset with bundled Windows JRE
+        run: |
+          mkdir -p ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra/jre
+          curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip | tar -xz -C ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra/jre --strip-components=1
+          zip -r ./jdemetra-3.0.0-SNAPSHOT+$(timestamp)-bin-windows.zip ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
+
       - name: Add timestamp to main asset name
         run: |
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(date +%Y%m%d%H%M%S)-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$(timestamp)-bin.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
@@ -48,5 +57,5 @@ jobs:
           allowUpdates: true
           tag: 'latest'
           removeArtifacts: true
-          artifacts: './jdemetra-*-bin.zip'
+          artifacts: './jdemetra-*-bin*.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
