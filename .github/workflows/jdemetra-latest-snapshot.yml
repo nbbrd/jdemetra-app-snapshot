@@ -47,11 +47,14 @@ jobs:
       - name: Create asset with bundled Windows JRE
         run: |
           unzip ./jre.zip -d ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
-          zip -r ./jdemetra-3.0.0-SNAPSHOT+$timestamp-bin-windows.zip ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
+          pushd ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target
+          echo "jdkhome=jdk-17.0.6+10-jre" >> etc/nbdemetra.conf
+          zip -r ./jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip nbdemetra
+          popd
 
       - name: Add timestamp to main asset name
         run: |
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+$timestamp-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
