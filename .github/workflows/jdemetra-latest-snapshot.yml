@@ -49,12 +49,13 @@ jobs:
           unzip ./jre.zip -d ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/nbdemetra
           pushd ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target
           echo "jdkhome=jdk-17.0.6+10-jre" >> nbdemetra/etc/nbdemetra.conf
-          zip -r ./jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip nbdemetra
+          zip -r jdemetra-3.0.0-SNAPSHOT-bin-windows.zip nbdemetra4
           popd
 
-      - name: Add timestamp to main asset name
+      - name: Add timestamp to assets names
         run: |
-          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{timestamp}}-bin.zip"
+          mv ./jd3-main/jd3-main-desktop/jd3-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{timestamp}}-bin-windows.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
