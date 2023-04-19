@@ -31,14 +31,15 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
 
-      - name: Build jdplus-main snapshots
+      - name: Download jdplus-main snapshots
         run: |
-          git clone -b develop --single-branch --depth=1 https://github.com/jdemetra/jdplus-main.git jdplus-main
-          mvn -B package -Pfast-build -DskipTests -T1C -f ./jdplus-main/pom.xml
+          mvn dependency:get -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -Dtransitive=false -DremoteRepositories=https://oss.sonatype.org/content/repositories/snapshots/
+          mvn dependency:copy -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -DoutputDirectory=./download
 
       - name: Create asset with bundled Windows JRE
         run: |
-          pushd ./jdplus-main/jdplus-main-desktop/jdplus-main-desktop-bin/target
+          pushd ./download
+          unzip jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip -d .
           curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip -o jre-windows.zip
           unzip jre-windows.zip -d nbdemetra
           echo "jdkhome=jdk-17.0.6+10-jre" >> nbdemetra/etc/nbdemetra.conf
@@ -50,8 +51,8 @@ jobs:
 
       - name: Add timestamp to assets names
         run: |
-          mv ./jdplus-main/jdplus-main-desktop/jdplus-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
-          mv ./jdplus-main/jdplus-main-desktop/jdplus-main-desktop-bin/target/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
+          mv ./download/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
+          mv ./download/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
