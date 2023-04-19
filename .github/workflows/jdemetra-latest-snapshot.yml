@@ -51,7 +51,7 @@ jobs:
 
       - name: Add timestamp to assets names
         run: |
-          mv ./download/jdemetra-3.0.0-SNAPSHOT-bin.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
+          mv ./download/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
           mv ./download/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
 
       - name: Create release and upload assets
