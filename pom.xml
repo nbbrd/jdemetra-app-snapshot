@@ -126,18 +126,19 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>setup-timestamp</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>create-timestamp</goal>
+                            <goal>timestamp-property</goal>
                         </goals>
                         <configuration>
-                            <executeRootOnly>true</executeRootOnly>
-                            <timestampFormat>yyyyMMddHHmmss</timestampFormat>
+                            <name>timestamp</name>
+                            <pattern>yyyyMMddHHmmss</pattern>
+                            <locale>ROOT</locale>
                         </configuration>
                     </execution>
                 </executions>
