@@ -34,6 +34,7 @@ jobs:
       - name: Download jdplus-main snapshots
         run: |
           mvn dependency:get -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -Dtransitive=false -DremoteRepositories=https://oss.sonatype.org/content/repositories/snapshots/
+          mvn dependency:copy -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -DoutputDirectory=./download
           mvn dependency:unpack -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -DoutputDirectory=./download
 
       - name: Create asset with bundled Windows JRE
