@@ -103,6 +103,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>package-binaries</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows</finalName>
+                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
                 <version>3.0.0</version>
@@ -121,28 +143,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>package-binaries</id>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows</finalName>
-                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.coderplus.maven.plugins</groupId>
                 <artifactId>copy-rename-maven-plugin</artifactId>
                 <version>1.0</version>
@@ -154,8 +154,16 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip</sourceFile>
-                            <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip</destinationFile>
+                            <fileSets>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip</destinationFile>
+                                </fileSet>
+                            </fileSets>
                         </configuration>
                     </execution>
                 </executions>
