@@ -103,6 +103,24 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>setup-timestamp</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create-timestamp</goal>
+                        </goals>
+                        <configuration>
+                            <executeRootOnly>true</executeRootOnly>
+                            <timestampFormat>yyyyMMddHHmmss</timestampFormat>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.5.0</version>
@@ -117,8 +135,27 @@
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>jdplus-main-desktop-bin-3.0.0-SNAPSHOT</finalName>
-                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+                            <finalName>jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows</finalName>
+                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip</sourceFile>
+                            <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip</destinationFile>
                         </configuration>
                     </execution>
                 </executions>

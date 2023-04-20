@@ -35,14 +35,6 @@ jobs:
         run: |
           mvn -B -ntp clean package
 
-      - name: Setup Timestamp
-        run: echo "timestamp=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-
-      - name: Add timestamp to assets names
-        run: |
-          mv ./target/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
-          mv ./target/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
-
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
         with:
@@ -51,5 +43,5 @@ jobs:
           allowUpdates: true
           tag: 'latest'
           removeArtifacts: true
-          artifacts: './jdemetra-*-bin*.zip'
+          artifacts: './target/upload/jdemetra-*-bin*.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
