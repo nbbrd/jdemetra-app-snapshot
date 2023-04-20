@@ -34,16 +34,16 @@ jobs:
       - name: Download jdplus-main snapshots
         run: |
           mvn dependency:get -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -Dtransitive=false -DremoteRepositories=https://oss.sonatype.org/content/repositories/snapshots/
-          mvn dependency:copy -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -DoutputDirectory=./download
-          mvn dependency:unpack -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -DoutputDirectory=./download
+          mvn dependency:copy -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -Dproject.basedir=.
+          mvn dependency:unpack -Dartifact=eu.europa.ec.joinup.sat:jdplus-main-desktop-bin:3.0.0-SNAPSHOT:zip -Dproject.basedir=.
 
       - name: Create asset with bundled Windows JRE
         run: |
-          pushd ./download
+          pushd ./target/dependency
           curl -sSL https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip -o jre-windows.zip
           unzip jre-windows.zip -d nbdemetra
           echo "jdkhome=jdk-17.0.6+10-jre" >> nbdemetra/etc/nbdemetra.conf
-          zip -r jdemetra-3.0.0-SNAPSHOT-bin-windows.zip nbdemetra
+          zip -r jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip nbdemetra
           popd
 
       - name: Setup Timestamp
@@ -51,8 +51,8 @@ jobs:
 
       - name: Add timestamp to assets names
         run: |
-          mv ./download/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
-          mv ./download/jdemetra-3.0.0-SNAPSHOT-bin-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
+          mv ./target/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin.zip"
+          mv ./target/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip "jdemetra-3.0.0-SNAPSHOT+${{env.timestamp}}-bin-windows.zip"
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
