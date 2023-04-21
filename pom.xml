@@ -8,10 +8,26 @@
     <version>1.0.0-snapshot</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <jdkname>jdk-17.0.6+10-jre</jdkname>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-main-desktop-bin</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <type>zip</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sat</groupId>
+            <artifactId>jdplus-main-cli-bin</artifactId>
             <version>3.0.0-SNAPSHOT</version>
             <type>zip</type>
             <exclusions>
@@ -93,7 +109,7 @@
                 <executions>
                     <execution>
                         <id>check-signatures</id>
-                        <phase>package</phase>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -114,12 +130,12 @@
                 <executions>
                     <execution>
                         <id>unpack-binaries</id>
-                        <phase>package</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>jdplus-main-desktop-bin</includeArtifactIds>
+                            <includeArtifactIds>jdplus-main-desktop-bin,jdplus-main-cli-bin</includeArtifactIds>
                         </configuration>
                     </execution>
                     <execution>
@@ -130,6 +146,7 @@
                         </goals>
                         <configuration>
                             <useBaseVersion>true</useBaseVersion>
+                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -141,7 +158,7 @@
                 <executions>
                     <execution>
                         <id>download-windows-jre</id>
-                        <phase>package</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>wget</goal>
                         </goals>
@@ -152,7 +169,6 @@
                             <sha256>85ce690a348977e3739fde3fd729b36c61e86c33da6628bc7ceeba9974a3480b</sha256>
                             <alwaysVerifyChecksum>true</alwaysVerifyChecksum>
                             <unpack>true</unpack>
-                            <outputDirectory>${project.build.directory}/dependency/nbdemetra</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -165,8 +181,38 @@
                 <version>1.1.0</version>
                 <executions>
                     <execution>
-                        <id>add-jre-to-config</id>
-                        <phase>package</phase>
+                        <id>configure-cli-bin1</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>find-and-replace</goal>
+                        </goals>
+                        <configuration>
+                            <replacementType>file-contents</replacementType>
+                            <baseDir>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <fileMask>jdplus-main-cli-bin.bat</fileMask>
+                            <encoding>UTF-8</encoding>
+                            <findRegex>JAVACMD=java</findRegex>
+                            <replaceValue>JAVACMD=%BASEDIR%\\${jdkname}\\bin\\java</replaceValue>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>configure-cli-bin2</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>find-and-replace</goal>
+                        </goals>
+                        <configuration>
+                            <replacementType>file-contents</replacementType>
+                            <baseDir>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <fileMask>jdplus-main-cli-bin</fileMask>
+                            <encoding>UTF-8</encoding>
+                            <findRegex>(if \[ -n "\$JAVA_HOME"  \] ; then)</findRegex>
+                            <replaceValue>JAVACMD="\$BASEDIR"\/${jdkname}/bin/java ; $1</replaceValue>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>configure-desktop-bin</id>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>find-and-replace</goal>
                         </goals>
@@ -176,7 +222,20 @@
                             <fileMask>nbdemetra.conf</fileMask>
                             <encoding>UTF-8</encoding>
                             <findRegex>#jdkhome="\/path\/to\/jdk"</findRegex>
-                            <replaceValue>jdkhome=jdk-17.0.6+10-jre</replaceValue>
+                            <replaceValue>jdkhome=${jdkname}</replaceValue>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-timestamp-to-filenames</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>find-and-replace</goal>
+                        </goals>
+                        <configuration>
+                            <replacementType>filenames</replacementType>
+                            <baseDir>target/upload/</baseDir>
+                            <findRegex>-SNAPSHOT</findRegex>
+                            <replaceValue>-SNAPSHOT+${timestamp}</replaceValue>
                         </configuration>
                     </execution>
                 </executions>
@@ -187,18 +246,35 @@
                 <version>3.5.0</version>
                 <executions>
                     <execution>
-                        <id>package-binaries</id>
+                        <id>pack-desktop-cli</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
-                        <phase>package</phase>
                         <configuration>
                             <descriptors>
-                                <descriptor>assembly.xml</descriptor>
+                                <descriptor>src/assembly/cli-assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>jdplus-main-cli-bin-3.0.0-SNAPSHOT-windows</finalName>
+                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>true</attach>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pack-desktop-bin</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/desktop-assembly.xml</descriptor>
                             </descriptors>
                             <finalName>jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows</finalName>
-                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
+                            <attach>true</attach>
                         </configuration>
                     </execution>
                 </executions>
@@ -212,7 +288,7 @@
                 <executions>
                     <execution>
                         <id>setup-timestamp</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>timestamp-property</goal>
                         </goals>
@@ -220,52 +296,6 @@
                             <name>timestamp</name>
                             <pattern>yyyyMMddHHmmss</pattern>
                             <locale>ROOT</locale>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.coderplus.maven.plugins</groupId>
-                <artifactId>copy-rename-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-file</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <fileSets>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT.zip</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin.zip</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-benchmarking-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdplus-benchmarking-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-highfreq-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdplus-highfreq-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-sdmx-desktop-plugin-3.0.0-SNAPSHOT.nbm</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdplus-sdmx-desktop-plugin-3.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-stl-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdplus-stl-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
-                                </fileSet>
-                                <fileSet>
-                                    <sourceFile>${project.build.directory}/dependency/jdplus-sts-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
-                                    <destinationFile>${project.build.directory}/upload/jdplus-sts-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
-                                </fileSet>
-                            </fileSets>
                         </configuration>
                     </execution>
                 </executions>

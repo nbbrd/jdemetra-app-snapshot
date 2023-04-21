@@ -11,5 +11,9 @@
             <directory>target/dependency/nbdemetra</directory>
             <outputDirectory>nbdemetra</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>target/${jdkname}</directory>
+            <outputDirectory>nbdemetra/${jdkname}</outputDirectory>
+        </fileSet>
     </fileSets>
 </assembly>

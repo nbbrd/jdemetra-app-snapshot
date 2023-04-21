@@ -1,0 +1,19 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 http://maven.apache.org/xsd/assembly-2.1.1.xsd">
+    <id>zip-dir</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT</directory>
+            <outputDirectory>jwsacruncher</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/${jdkname}</directory>
+            <outputDirectory>jwsacruncher/${jdkname}</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
