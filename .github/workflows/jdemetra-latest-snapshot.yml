@@ -43,5 +43,5 @@ jobs:
           allowUpdates: true
           tag: 'latest'
           removeArtifacts: true
-          artifacts: './target/upload/jdemetra-*-bin*.zip'
+          artifacts: './target/upload/*'
           token: ${{ secrets.GITHUB_TOKEN }}

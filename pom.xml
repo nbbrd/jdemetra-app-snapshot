@@ -21,6 +21,66 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.github.nbbrd.jdemetra3-sdmx</groupId>
+            <artifactId>jdplus-sdmx-desktop-plugin</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+            <type>nbm</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sat</groupId>
+            <artifactId>jdplus-benchmarking-desktop-plugin</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>nbm</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sat</groupId>
+            <artifactId>jdplus-highfreq-desktop-plugin</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>nbm</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sat</groupId>
+            <artifactId>jdplus-stl-desktop-plugin</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>nbm</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>eu.europa.ec.joinup.sat</groupId>
+            <artifactId>jdplus-sts-desktop-plugin</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <type>nbm</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -38,6 +98,8 @@
                         </goals>
                         <configuration>
                             <verifySnapshots>true</verifySnapshots>
+                            <failNoSignature>true</failNoSignature>
+                            <failWeakSignature>true</failWeakSignature>
                         </configuration>
                     </execution>
                 </executions>
@@ -51,9 +113,21 @@
                         <id>copy-and-unpack-binaries</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
                             <goal>unpack-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <includeArtifactIds>jdplus-main-desktop-bin</includeArtifactIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-plugins</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <useBaseVersion>true</useBaseVersion>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -164,6 +238,26 @@
                                     <sourceFile>${project.build.directory}/dependency/jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows.zip</sourceFile>
                                     <destinationFile>${project.build.directory}/upload/jdemetra-3.0.0-SNAPSHOT+${timestamp}-bin-windows.zip</destinationFile>
                                 </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-benchmarking-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdplus-benchmarking-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-highfreq-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdplus-highfreq-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-sdmx-desktop-plugin-3.0.0-SNAPSHOT.nbm</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdplus-sdmx-desktop-plugin-3.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-stl-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdplus-stl-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>${project.build.directory}/dependency/jdplus-sts-desktop-plugin-1.0.0-SNAPSHOT.nbm</sourceFile>
+                                    <destinationFile>${project.build.directory}/upload/jdplus-sts-desktop-plugin-1.0.0-SNAPSHOT+${timestamp}.nbm</destinationFile>
+                                </fileSet>
                             </fileSets>
                         </configuration>
                     </execution>
@@ -174,8 +268,18 @@
 
     <repositories>
         <repository>
-            <id>ossrh-snapshots</id>
+            <id>jdemetra-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>nbbrd-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
