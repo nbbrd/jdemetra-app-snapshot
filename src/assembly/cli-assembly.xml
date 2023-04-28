@@ -8,12 +8,12 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT</directory>
-            <outputDirectory>jwsacruncher</outputDirectory>
+            <directory>target/dependency/jwsacruncher-3.0.0-SNAPSHOT</directory>
+            <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/${jdkname}</directory>
-            <outputDirectory>jwsacruncher/${jdkname}</outputDirectory>
+            <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT/${jdkname}</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

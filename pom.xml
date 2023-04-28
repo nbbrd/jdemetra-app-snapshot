@@ -101,7 +101,7 @@
 
     <build>
         <plugins>
-            <!-- 1. Check plugins and binaries -->
+            <!-- 1. Check signatures and create timestamp -->
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
                 <artifactId>pgpverify-maven-plugin</artifactId>
@@ -121,8 +121,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>setup-timestamp</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>timestamp</name>
+                            <pattern>yyyyMMddHHmmss</pattern>
+                            <locale>ROOT</locale>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-            <!-- 2. Download plugins, binaries and JRE -->
+            <!-- 2. Gather plugins, binaries and JRE -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -188,8 +207,8 @@
                         </goals>
                         <configuration>
                             <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT/bin/</baseDir>
-                            <fileMask>jdplus-main-cli-bin.bat</fileMask>
+                            <baseDir>target/dependency/jwsacruncher-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <fileMask>jwsacruncher.bat</fileMask>
                             <encoding>UTF-8</encoding>
                             <findRegex>JAVACMD=java</findRegex>
                             <replaceValue>JAVACMD=%BASEDIR%\\${jdkname}\\bin\\java</replaceValue>
@@ -203,11 +222,24 @@
                         </goals>
                         <configuration>
                             <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jdplus-main-cli-bin-3.0.0-SNAPSHOT/bin/</baseDir>
-                            <fileMask>jdplus-main-cli-bin</fileMask>
+                            <baseDir>target/dependency/jwsacruncher-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <fileMask>jwsacruncher</fileMask>
                             <encoding>UTF-8</encoding>
                             <findRegex>(if \[ -n "\$JAVA_HOME"  \] ; then)</findRegex>
                             <replaceValue>JAVACMD="\$BASEDIR"\/${jdkname}/bin/java ; $1</replaceValue>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>rename-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>find-and-replace</goal>
+                        </goals>
+                        <configuration>
+                            <replacementType>filenames</replacementType>
+                            <baseDir>target/upload/</baseDir>
+                            <findRegex>jdplus-main-cli-bin</findRegex>
+                            <replaceValue>jwsacruncher</replaceValue>
                         </configuration>
                     </execution>
                     <execution>
@@ -223,6 +255,19 @@
                             <encoding>UTF-8</encoding>
                             <findRegex>#jdkhome="\/path\/to\/jdk"</findRegex>
                             <replaceValue>jdkhome=${jdkname}</replaceValue>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>rename-desktop</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>find-and-replace</goal>
+                        </goals>
+                        <configuration>
+                            <replacementType>filenames</replacementType>
+                            <baseDir>target/upload/</baseDir>
+                            <findRegex>jdplus-main-desktop-bin</findRegex>
+                            <replaceValue>jdemetra</replaceValue>
                         </configuration>
                     </execution>
                     <execution>
@@ -255,7 +300,7 @@
                             <descriptors>
                                 <descriptor>src/assembly/cli-assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>jdplus-main-cli-bin-3.0.0-SNAPSHOT-windows</finalName>
+                            <finalName>jwsacruncher-3.0.0-SNAPSHOT-windows</finalName>
                             <outputDirectory>${project.build.directory}/upload</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
                             <attach>true</attach>
@@ -271,31 +316,10 @@
                             <descriptors>
                                 <descriptor>src/assembly/desktop-assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>jdplus-main-desktop-bin-3.0.0-SNAPSHOT-windows</finalName>
+                            <finalName>jdemetra-3.0.0-SNAPSHOT-windows</finalName>
                             <outputDirectory>${project.build.directory}/upload</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
                             <attach>true</attach>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- 4. Gather plugins and binaries -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>setup-timestamp</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>timestamp-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>timestamp</name>
-                            <pattern>yyyyMMddHHmmss</pattern>
-                            <locale>ROOT</locale>
                         </configuration>
                     </execution>
                 </executions>
