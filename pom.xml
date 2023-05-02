@@ -9,7 +9,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jdkname>jdk-17.0.6+10-jre</jdkname>
+        <java.bundled.version>jdk-17.0.7+7</java.bundled.version>
+        <jdkname>${java.bundled.version}-jre</jdkname>
     </properties>
 
     <dependencies>
@@ -171,22 +172,26 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <groupId>org.jreleaser</groupId>
+                <artifactId>jdks-maven-plugin</artifactId>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
                         <id>download-windows-jre</id>
                         <phase>process-resources</phase>
                         <goals>
-                            <goal>wget</goal>
+                            <goal>setup-disco</goal>
                         </goals>
                         <configuration>
-                            <uri>
-                                https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.6_10.zip
-                            </uri>
-                            <sha256>85ce690a348977e3739fde3fd729b36c61e86c33da6628bc7ceeba9974a3480b</sha256>
-                            <alwaysVerifyChecksum>true</alwaysVerifyChecksum>
+                            <pkgs>
+                                <pkg>
+                                    <name>temurin17</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>windows-x86_64</platform>
+                                    <version>${java.bundled.version}</version>
+                                    <packageType>jre</packageType>
+                                </pkg>
+                            </pkgs>
                             <unpack>true</unpack>
                         </configuration>
                     </execution>

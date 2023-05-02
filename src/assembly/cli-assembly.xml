@@ -12,7 +12,7 @@
             <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>target/${jdkname}</directory>
+            <directory>target/jdks/temurin17/${jdkname}</directory>
             <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT/${jdkname}</outputDirectory>
         </fileSet>
     </fileSets>
