@@ -11,13 +11,14 @@
     <properties>
         <java.bundled.version>jdk-17.0.7+7</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
+        <jdplus-main.version>3.0.1-SNAPSHOT</jdplus-main.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-main-desktop-bin</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>${jdplus-main.version}</version>
             <type>zip</type>
             <exclusions>
                 <exclusion>
@@ -29,7 +30,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-main-cli-bin</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>${jdplus-main.version}</version>
             <type>zip</type>
             <exclusions>
                 <exclusion>
@@ -212,7 +213,7 @@
                         </goals>
                         <configuration>
                             <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jwsacruncher-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <baseDir>target/dependency/jwsacruncher-${jdplus-main.version}/bin/</baseDir>
                             <fileMask>jwsacruncher.bat</fileMask>
                             <encoding>UTF-8</encoding>
                             <findRegex>JAVACMD=java</findRegex>
@@ -227,7 +228,7 @@
                         </goals>
                         <configuration>
                             <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jwsacruncher-3.0.0-SNAPSHOT/bin/</baseDir>
+                            <baseDir>target/dependency/jwsacruncher-${jdplus-main.version}/bin/</baseDir>
                             <fileMask>jwsacruncher</fileMask>
                             <encoding>UTF-8</encoding>
                             <findRegex>(if \[ -n "\$JAVA_HOME"  \] ; then)</findRegex>
@@ -305,7 +306,7 @@
                             <descriptors>
                                 <descriptor>src/assembly/cli-assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>jwsacruncher-3.0.0-SNAPSHOT-windows</finalName>
+                            <finalName>jwsacruncher-${jdplus-main.version}-windows</finalName>
                             <outputDirectory>${project.build.directory}/upload</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
                             <attach>true</attach>
@@ -321,7 +322,7 @@
                             <descriptors>
                                 <descriptor>src/assembly/desktop-assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>jdemetra-3.0.0-SNAPSHOT-windows</finalName>
+                            <finalName>jdemetra-${jdplus-main.version}-windows</finalName>
                             <outputDirectory>${project.build.directory}/upload</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
                             <attach>true</attach>

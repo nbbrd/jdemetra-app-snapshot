@@ -8,12 +8,12 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>target/dependency/jwsacruncher-3.0.0-SNAPSHOT</directory>
-            <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT</outputDirectory>
+            <directory>target/dependency/jwsacruncher-${jdplus-main.version}</directory>
+            <outputDirectory>jwsacruncher-${jdplus-main.version}</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/jdks/temurin17/${jdkname}</directory>
-            <outputDirectory>jwsacruncher-3.0.0-SNAPSHOT/${jdkname}</outputDirectory>
+            <outputDirectory>jwsacruncher-${jdplus-main.version}/${jdkname}</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
