@@ -11,7 +11,7 @@
     <properties>
         <java.bundled.version>jdk-17.0.7+7</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
-        <jdplus-main.version>3.0.1-SNAPSHOT</jdplus-main.version>
+        <jdplus-main.version>3.0.2-SNAPSHOT</jdplus-main.version>
     </properties>
 
     <dependencies>
