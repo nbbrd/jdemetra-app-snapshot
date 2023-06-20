@@ -11,7 +11,10 @@
     <properties>
         <java.bundled.version>jdk-17.0.7+7</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
-        <jdplus-main.version>3.0.2-SNAPSHOT</jdplus-main.version>
+        <jdplus-main.version>3.0.3-SNAPSHOT</jdplus-main.version>
+        <jdplus-sdmx.version>3.0.1-SNAPSHOT</jdplus-sdmx.version>
+        <jdplus-benchmarking.version>1.0.0-SNAPSHOT</jdplus-benchmarking.version>
+        <jdplus-incubator.version>1.0.1-SNAPSHOT</jdplus-incubator.version>
     </properties>
 
     <dependencies>
@@ -42,7 +45,7 @@
         <dependency>
             <groupId>com.github.nbbrd.jplus-sdmx</groupId>
             <artifactId>jdplus-sdmx-desktop-plugin</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>${jdplus-sdmx.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
@@ -54,7 +57,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-benchmarking-desktop-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jdplus-benchmarking.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
@@ -66,7 +69,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-highfreq-desktop-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jdplus-incubator.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
@@ -78,7 +81,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-stl-desktop-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jdplus-incubator.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
@@ -90,7 +93,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-sts-desktop-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${jdplus-incubator.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
