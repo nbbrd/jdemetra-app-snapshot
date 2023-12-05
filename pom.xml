@@ -12,7 +12,7 @@
         <java.bundled.version>jdk-17.0.7+7</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
         <jdplus-main.version>3.0.3-SNAPSHOT</jdplus-main.version>
-        <jdplus-sdmx.version>3.0.1-SNAPSHOT</jdplus-sdmx.version>
+        <jdplus-sdmx.version>3.1.0</jdplus-sdmx.version>
         <jdplus-benchmarking.version>1.0.0-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>1.0.1-SNAPSHOT</jdplus-incubator.version>
     </properties>
