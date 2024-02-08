@@ -189,7 +189,7 @@
                         <configuration>
                             <pkgs>
                                 <pkg>
-                                    <name>temurin21</name>
+                                    <name>temurin</name>
                                     <distribution>temurin</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
