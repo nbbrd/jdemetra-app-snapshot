@@ -9,11 +9,11 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.bundled.version>jdk-17.0.9+9</java.bundled.version>
+        <java.bundled.version>jdk-21.0.2+13</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
         <jdplus-main.version>3.2.2-SNAPSHOT</jdplus-main.version>
         <jdplus-sdmx.version>3.1.1-SNAPSHOT</jdplus-sdmx.version>
-        <jdplus-benchmarking.version>1.0.0-SNAPSHOT</jdplus-benchmarking.version>
+        <jdplus-benchmarking.version>1.2.0-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>2.0.1-SNAPSHOT</jdplus-incubator.version>
     </properties>
 
@@ -189,7 +189,7 @@
                         <configuration>
                             <pkgs>
                                 <pkg>
-                                    <name>temurin17</name>
+                                    <name>temurin21</name>
                                     <distribution>temurin</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
