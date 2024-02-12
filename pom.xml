@@ -189,14 +189,14 @@
                         <configuration>
                             <pkgs>
                                 <pkg>
-                                    <name>temurin</name>
+                                    <name>temurin-windows</name>
                                     <distribution>temurin</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
                                 </pkg>
                             </pkgs>
-                            <unpack>true</unpack>
+                            <unpack>false</unpack>
                         </configuration>
                     </execution>
                 </executions>
@@ -296,39 +296,34 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.6.0</version>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>pack-desktop-cli</id>
+                        <id>pack-windows-binaries</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/cli-assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>jwsacruncher-${jdplus-main.version}-windows</finalName>
-                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <attach>true</attach>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>pack-desktop-bin</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/desktop-assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>jdemetra-${jdplus-main.version}-windows</finalName>
-                            <outputDirectory>${project.build.directory}/upload</outputDirectory>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <attach>true</attach>
+                            <target>
+                                <pathconvert property="temurin-windows">
+                                    <first>
+                                        <fileset dir="${project.build.directory}/jdks/temurin-windows"/>
+                                    </first>
+                                </pathconvert>
+                                <zip destfile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-windows.zip">
+                                    <zipfileset
+                                            dir="${project.build.directory}/dependency/jwsacruncher-${jdplus-main.version}"
+                                            prefix="jwsacruncher-${jdplus-main.version}"/>
+                                    <zipfileset src="${temurin-windows}" prefix="jwsacruncher-${jdplus-main.version}"/>
+                                </zip>
+                                <zip destfile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}-windows.zip">
+                                    <zipfileset dir="${project.build.directory}/dependency/nbdemetra"
+                                                prefix="nbdemetra"/>
+                                    <zipfileset src="${temurin-windows}" prefix="nbdemetra"/>
+                                </zip>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
