@@ -153,18 +153,8 @@
                 <version>3.6.1</version>
                 <executions>
                     <execution>
-                        <id>unpack-binaries</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeArtifactIds>jdplus-main-desktop-bin,jdplus-main-cli-bin</includeArtifactIds>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>copy-plugins-and-binaries</id>
-                        <phase>package</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -195,6 +185,14 @@
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
                                 </pkg>
+                                <pkg>
+                                    <name>temurin-linux</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>linux-x86_64</platform>
+                                    <version>${java.bundled.version}</version>
+                                    <packageType>jre</packageType>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
                             </pkgs>
                             <unpack>false</unpack>
                         </configuration>
@@ -208,77 +206,6 @@
                 <artifactId>find-and-replace-maven-plugin</artifactId>
                 <version>1.1.0</version>
                 <executions>
-                    <execution>
-                        <id>configure-cli-bin1</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>find-and-replace</goal>
-                        </goals>
-                        <configuration>
-                            <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jwsacruncher-${jdplus-main.version}/bin/</baseDir>
-                            <fileMask>jwsacruncher.bat</fileMask>
-                            <encoding>UTF-8</encoding>
-                            <findRegex>JAVACMD=java</findRegex>
-                            <replaceValue>JAVACMD=%BASEDIR%\\${jdkname}\\bin\\java</replaceValue>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>configure-cli-bin2</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>find-and-replace</goal>
-                        </goals>
-                        <configuration>
-                            <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/jwsacruncher-${jdplus-main.version}/bin/</baseDir>
-                            <fileMask>jwsacruncher</fileMask>
-                            <encoding>UTF-8</encoding>
-                            <findRegex>(if \[ -n "\$JAVA_HOME"  \] ; then)</findRegex>
-                            <replaceValue>JAVACMD="\$BASEDIR"\/${jdkname}/bin/java ; $1</replaceValue>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>rename-cli</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>find-and-replace</goal>
-                        </goals>
-                        <configuration>
-                            <replacementType>filenames</replacementType>
-                            <baseDir>target/upload/</baseDir>
-                            <findRegex>jdplus-main-cli-bin</findRegex>
-                            <replaceValue>jwsacruncher</replaceValue>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>configure-desktop-bin</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>find-and-replace</goal>
-                        </goals>
-                        <configuration>
-                            <replacementType>file-contents</replacementType>
-                            <baseDir>target/dependency/nbdemetra/etc/</baseDir>
-                            <fileMask>nbdemetra.conf</fileMask>
-                            <encoding>UTF-8</encoding>
-                            <findRegex>#jdkhome="\/path\/to\/jdk"</findRegex>
-                            <replaceValue>jdkhome=${jdkname}</replaceValue>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>rename-desktop</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>find-and-replace</goal>
-                        </goals>
-                        <configuration>
-                            <replacementType>filenames</replacementType>
-                            <baseDir>target/upload/</baseDir>
-                            <findRegex>jdplus-main-desktop-bin</findRegex>
-                            <replaceValue>jdemetra</replaceValue>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>add-timestamp-to-filenames</id>
                         <phase>package</phase>
@@ -300,28 +227,89 @@
                 <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>pack-windows-binaries</id>
+                        <id>pack-cli-binaries</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <pathconvert property="temurin-windows">
+                                <move file="${project.build.directory}/upload/jdplus-main-cli-bin-${jdplus-main.version}.zip"
+                                      tofile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
+
+                                <pathconvert property="temurin.windows">
                                     <first>
                                         <fileset dir="${project.build.directory}/jdks/temurin-windows"/>
                                     </first>
                                 </pathconvert>
-                                <zip destfile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-windows.zip">
-                                    <zipfileset
-                                            dir="${project.build.directory}/dependency/jwsacruncher-${jdplus-main.version}"
-                                            prefix="jwsacruncher-${jdplus-main.version}"/>
-                                    <zipfileset src="${temurin-windows}" prefix="jwsacruncher-${jdplus-main.version}"/>
-                                </zip>
+
+                                <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
+                                    <property name="x.programId" value="jwsacruncher"/>
+                                    <property name="x.input"
+                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
+                                    <property name="x.output"
+                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-windows.zip"/>
+                                    <property name="x.assembleDirectory" value="jwsacruncher-${jdplus-main.version}"/>
+                                    <property name="x.jdkArchive" value="${temurin.windows}"/>
+                                    <property name="x.jdkDirectory" value="${jdkname}"/>
+                                    <target name="bundle-zip"/>
+                                </ant>
+
+                                <pathconvert property="temurin.linux">
+                                    <first>
+                                        <fileset dir="${project.build.directory}/jdks/temurin-linux"/>
+                                    </first>
+                                </pathconvert>
+
+                                <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
+                                    <property name="x.programId" value="jwsacruncher"/>
+                                    <property name="x.input"
+                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
+                                    <property name="x.output"
+                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-linux.tar.gz"/>
+                                    <property name="x.assembleDirectory" value="jwsacruncher-${jdplus-main.version}"/>
+                                    <property name="x.jdkArchive" value="${temurin.linux}"/>
+                                    <property name="x.jdkDirectory" value="${jdkname}"/>
+                                    <target name="bundle-tar"/>
+                                </ant>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pack-desktop-binaries</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- 1. rename main binary -->
+                                <move file="${project.build.directory}/upload/jdplus-main-desktop-bin-${jdplus-main.version}.zip"
+                                      tofile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
+
+                                <!-- 2. extract and modify config -->
+                                <unzip src="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"
+                                       dest="${project.build.directory}/pack_desktop" overwrite="true">
+                                    <patternset>
+                                        <include name="nbdemetra/etc/nbdemetra.conf"/>
+                                    </patternset>
+                                </unzip>
+                                <replace file="${project.build.directory}/pack_desktop/nbdemetra/etc/nbdemetra.conf"
+                                         token="#jdkhome=&quot;/path/to/jdk&quot;" value="jdkhome=${jdkname}"/>
+
+                                <!-- 3. merge main, config and jdk into windows binary -->
+                                <pathconvert property="jdk.filename">
+                                    <first>
+                                        <fileset dir="${project.build.directory}/jdks/temurin-windows"/>
+                                    </first>
+                                </pathconvert>
                                 <zip destfile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}-windows.zip">
-                                    <zipfileset dir="${project.build.directory}/dependency/nbdemetra"
+                                    <zipfileset
+                                            src="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"
+                                            excludes="nbdemetra/etc/nbdemetra.conf"/>
+                                    <zipfileset dir="${project.build.directory}/pack_desktop/nbdemetra"
                                                 prefix="nbdemetra"/>
-                                    <zipfileset src="${temurin-windows}" prefix="nbdemetra"/>
+                                    <zipfileset src="${jdk.filename}" prefix="nbdemetra"/>
                                 </zip>
                             </target>
                         </configuration>

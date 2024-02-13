@@ -1,0 +1,88 @@
+<!-- https://www.mojohaus.org/appassembler/appassembler-maven-plugin/assemble-mojo.html -->
+<project name="bundle-appassembler">
+
+    <property name="x.tempDirectory" value="${project.build.directory}/bundle_appassembler"/>
+    <property name="x.windowsScript" value="${x.assembleDirectory}/bin/${x.programId}.bat"/>
+    <property name="x.unixScript" value="${x.assembleDirectory}/bin/${x.programId}"/>
+
+    <target name="check-parameters">
+        <prop-require prop="x.programId" />
+        <prop-require prop="x.input" />
+        <prop-require prop="x.output" />
+        <prop-require prop="x.assembleDirectory" />
+        <prop-require prop="x.jdkArchive" />
+        <prop-require prop="x.jdkDirectory" />
+    </target>
+
+    <target name="process-scripts">
+        <unzip src="${x.input}" dest="${x.tempDirectory}">
+            <patternset>
+                <include name="${x.windowsScript}"/>
+                <include name="${x.unixScript}"/>
+            </patternset>
+        </unzip>
+        <replace
+                file="${x.tempDirectory}/${x.windowsScript}"
+                token="JAVACMD=java" value="JAVACMD=%BASEDIR%\${x.jdkDirectory}\bin\java"/>
+        <replace
+                file="${x.tempDirectory}/${x.unixScript}"
+                token="if [ -n &quot;$JAVA_HOME&quot;  ] ; then"
+                value="JAVACMD=&quot;$BASEDIR&quot;/${x.jdkDirectory}/bin/java ;&#10;  if [ -n &quot;$JAVA_HOME&quot;  ] ; then"/>
+    </target>
+
+    <target name="cleanup-scripts">
+        <delete dir="${x.tempDirectory}"/>
+    </target>
+
+    <target name="bundle-zip">
+        <antcall target="check-parameters"/>
+        <antcall target="process-scripts"/>
+
+        <!-- merge input, config and jdk into binary -->
+        <zip destfile="${x.output}">
+            <zipfileset src="${x.input}" excludes="${x.windowsScript},${x.unixScript}"/>
+            <zipfileset dir="${x.tempDirectory}" includes="${x.windowsScript},${x.unixScript}"/>
+            <zipfileset src="${x.jdkArchive}" prefix="${x.assembleDirectory}"/>
+        </zip>
+
+        <antcall target="cleanup-scripts"/>
+    </target>
+
+    <target name="bundle-tar">
+        <antcall target="check-parameters"/>
+        <antcall target="process-scripts"/>
+
+        <!-- merge input, config and jdk into binary -->
+        <tar destfile="${x.output}" compression="gzip">
+            <zipfileset src="${x.input}" excludes="${x.windowsScript},${x.unixScript}"/>
+            <tarfileset dir="${x.tempDirectory}" includes="${x.windowsScript},${x.unixScript}"/>
+            <tarfileset  prefix="${x.assembleDirectory}">
+                <gzipresource>
+                    <file file="${x.jdkArchive}"/>
+                </gzipresource>
+            </tarfileset>
+        </tar>
+
+        <antcall target="cleanup-scripts"/>
+    </target>
+
+    <!-- Macro to require a property is not blank -->
+    <macrodef name="prop-require">
+        <attribute name="prop"/>
+        <sequential>
+            <fail message="Property &quot;@{prop}&quot; must be set">
+                <condition>
+                    <not>
+                        <isset property="@{prop}"/>
+                    </not>
+                </condition>
+            </fail>
+
+            <fail message="Property &quot;@{prop}&quot; must not be empty">
+                <condition>
+                    <equals arg1="${@{prop}}" arg2=""/>
+                </condition>
+            </fail>
+        </sequential>
+    </macrodef>
+</project>
