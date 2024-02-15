@@ -43,15 +43,14 @@
         <antcall target="check-parameters"/>
         <antcall target="process-scripts"/>
 
+        <!-- expand jdk archive first for avoid performance issue -->
+        <gunzip src="${x.jdkArchive}" dest="${x.tempDirectory}/jdk.tar"/>
+
         <!-- merge bundleInput, config and jdk into binary -->
         <tar destfile="${x.bundleOutput}" compression="gzip" longfile="gnu">
             <zipfileset src="${x.bundleInput}" excludes="${x.configFile}"/>
             <tarfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
-            <tarfileset prefix="${x.branding}">
-                <gzipresource>
-                    <file file="${x.jdkArchive}"/>
-                </gzipresource>
-            </tarfileset>
+            <tarfileset src="${x.tempDirectory}/jdk.tar" prefix="${x.branding}"/>
         </tar>
 
         <antcall target="cleanup-scripts"/>
