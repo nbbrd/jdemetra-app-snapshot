@@ -179,16 +179,25 @@
                         <configuration>
                             <pkgs>
                                 <pkg>
-                                    <name>temurin-windows</name>
+                                    <name>temurin-windows-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
+                                    <archiveType>zip</archiveType>
                                 </pkg>
                                 <pkg>
-                                    <name>temurin-linux</name>
+                                    <name>temurin-linux-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-x86_64</platform>
+                                    <version>${java.bundled.version}</version>
+                                    <packageType>jre</packageType>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
+                                <pkg>
+                                    <name>temurin-mac-x86_64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>mac-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
                                     <archiveType>tar.gz</archiveType>
@@ -237,41 +246,33 @@
                                 <move file="${project.build.directory}/upload/jdplus-main-cli-bin-${jdplus-main.version}.zip"
                                       tofile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
 
-                                <pathconvert property="temurin.windows">
-                                    <first>
-                                        <fileset dir="${project.build.directory}/jdks/temurin-windows"/>
-                                    </first>
-                                </pathconvert>
+                                <macrodef name="bundle-cli">
+                                    <attribute name="platform"/>
+                                    <attribute name="extension"/>
+                                    <sequential>
+                                        <pathconvert property="temurin.@{platform}">
+                                            <first>
+                                                <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
+                                            </first>
+                                        </pathconvert>
+                                        <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
+                                            <property name="x.bundleInput"
+                                                      value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
+                                            <property name="x.bundleOutput"
+                                                      value="${project.build.directory}/upload/jwsacruncher-standalone-${jdplus-main.version}-@{platform}.@{extension}"/>
+                                            <property name="x.programId" value="jwsacruncher"/>
+                                            <property name="x.baseDirectory"
+                                                      value="jwsacruncher-${jdplus-main.version}"/>
+                                            <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
+                                            <property name="x.jdkDirectory" value="${jdkname}"/>
+                                            <target name="bundle.@{extension}"/>
+                                        </ant>
+                                    </sequential>
+                                </macrodef>
 
-                                <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
-                                    <property name="x.programId" value="jwsacruncher"/>
-                                    <property name="x.input"
-                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
-                                    <property name="x.output"
-                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-windows.zip"/>
-                                    <property name="x.assembleDirectory" value="jwsacruncher-${jdplus-main.version}"/>
-                                    <property name="x.jdkArchive" value="${temurin.windows}"/>
-                                    <property name="x.jdkDirectory" value="${jdkname}"/>
-                                    <target name="bundle-zip"/>
-                                </ant>
-
-                                <pathconvert property="temurin.linux">
-                                    <first>
-                                        <fileset dir="${project.build.directory}/jdks/temurin-linux"/>
-                                    </first>
-                                </pathconvert>
-
-                                <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
-                                    <property name="x.programId" value="jwsacruncher"/>
-                                    <property name="x.input"
-                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
-                                    <property name="x.output"
-                                              value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}-linux.tar.gz"/>
-                                    <property name="x.assembleDirectory" value="jwsacruncher-${jdplus-main.version}"/>
-                                    <property name="x.jdkArchive" value="${temurin.linux}"/>
-                                    <property name="x.jdkDirectory" value="${jdkname}"/>
-                                    <target name="bundle-tar"/>
-                                </ant>
+                                <bundle-cli platform="windows-x86_64" extension="zip"/>
+                                <bundle-cli platform="linux-x86_64" extension="tar.gz"/>
+                                <bundle-cli platform="mac-x86_64" extension="tar.gz"/>
                             </target>
                         </configuration>
                     </execution>
@@ -283,34 +284,34 @@
                         </goals>
                         <configuration>
                             <target>
-                                <!-- 1. rename main binary -->
                                 <move file="${project.build.directory}/upload/jdplus-main-desktop-bin-${jdplus-main.version}.zip"
                                       tofile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
 
-                                <!-- 2. extract and modify config -->
-                                <unzip src="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"
-                                       dest="${project.build.directory}/pack_desktop" overwrite="true">
-                                    <patternset>
-                                        <include name="nbdemetra/etc/nbdemetra.conf"/>
-                                    </patternset>
-                                </unzip>
-                                <replace file="${project.build.directory}/pack_desktop/nbdemetra/etc/nbdemetra.conf"
-                                         token="#jdkhome=&quot;/path/to/jdk&quot;" value="jdkhome=${jdkname}"/>
+                                <macrodef name="bundle-desktop">
+                                    <attribute name="platform"/>
+                                    <attribute name="extension"/>
+                                    <sequential>
+                                        <pathconvert property="temurin.@{platform}">
+                                            <first>
+                                                <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
+                                            </first>
+                                        </pathconvert>
+                                        <ant antfile="${project.basedir}/src/antrun/bundle-netbeans.xml">
+                                            <property name="x.bundleInput"
+                                                      value="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
+                                            <property name="x.bundleOutput"
+                                                      value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.@{extension}"/>
+                                            <property name="x.branding" value="nbdemetra"/>
+                                            <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
+                                            <property name="x.jdkDirectory" value="${jdkname}"/>
+                                            <target name="bundle.@{extension}"/>
+                                        </ant>
+                                    </sequential>
+                                </macrodef>
 
-                                <!-- 3. merge main, config and jdk into windows binary -->
-                                <pathconvert property="jdk.filename">
-                                    <first>
-                                        <fileset dir="${project.build.directory}/jdks/temurin-windows"/>
-                                    </first>
-                                </pathconvert>
-                                <zip destfile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}-windows.zip">
-                                    <zipfileset
-                                            src="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"
-                                            excludes="nbdemetra/etc/nbdemetra.conf"/>
-                                    <zipfileset dir="${project.build.directory}/pack_desktop/nbdemetra"
-                                                prefix="nbdemetra"/>
-                                    <zipfileset src="${jdk.filename}" prefix="nbdemetra"/>
-                                </zip>
+                                <bundle-desktop platform="windows-x86_64" extension="zip"/>
+                                <bundle-desktop platform="linux-x86_64" extension="tar.gz"/>
+                                <bundle-desktop platform="mac-x86_64" extension="tar.gz"/>
                             </target>
                         </configuration>
                     </execution>

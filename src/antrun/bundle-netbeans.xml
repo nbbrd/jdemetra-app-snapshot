@@ -1,15 +1,12 @@
-<!-- https://www.mojohaus.org/appassembler/appassembler-maven-plugin/assemble-mojo.html -->
-<project name="bundle-appassembler">
+<project name="bundle-netbeans">
 
     <tempfile property="x.tempDirectory" destdir="${project.build.directory}"/>
-    <property name="x.windowsScript" value="${x.baseDirectory}/bin/${x.programId}.bat"/>
-    <property name="x.unixScript" value="${x.baseDirectory}/bin/${x.programId}"/>
+    <property name="x.configFile" value="${x.branding}/etc/${x.branding}.conf"/>
 
     <target name="check-parameters">
         <prop-require prop="x.bundleInput"/>
         <prop-require prop="x.bundleOutput"/>
-        <prop-require prop="x.programId"/>
-        <prop-require prop="x.baseDirectory"/>
+        <prop-require prop="x.branding"/>
         <prop-require prop="x.jdkArchive"/>
         <prop-require prop="x.jdkDirectory"/>
     </target>
@@ -17,17 +14,11 @@
     <target name="process-scripts">
         <unzip src="${x.bundleInput}" dest="${x.tempDirectory}">
             <patternset>
-                <include name="${x.windowsScript}"/>
-                <include name="${x.unixScript}"/>
+                <include name="${x.configFile}"/>
             </patternset>
         </unzip>
-        <replace
-                file="${x.tempDirectory}/${x.windowsScript}"
-                token="JAVACMD=java" value="JAVACMD=%BASEDIR%\${x.jdkDirectory}\bin\java"/>
-        <replace
-                file="${x.tempDirectory}/${x.unixScript}"
-                token="if [ -n &quot;$JAVA_HOME&quot;  ] ; then"
-                value="JAVACMD=&quot;$BASEDIR&quot;/${x.jdkDirectory}/bin/java ;&#10;  if [ -n &quot;$JAVA_HOME&quot;  ] ; then"/>
+        <replace file="${x.tempDirectory}/${x.configFile}"
+                 token="#jdkhome=&quot;/path/to/jdk&quot;" value="jdkhome=${x.jdkDirectory}"/>
     </target>
 
     <target name="cleanup-scripts">
@@ -40,9 +31,9 @@
 
         <!-- merge bundleInput, config and jdk into binary -->
         <zip destfile="${x.bundleOutput}">
-            <zipfileset src="${x.bundleInput}" excludes="${x.windowsScript},${x.unixScript}"/>
-            <zipfileset dir="${x.tempDirectory}" includes="${x.windowsScript},${x.unixScript}"/>
-            <zipfileset src="${x.jdkArchive}" prefix="${x.baseDirectory}"/>
+            <zipfileset src="${x.bundleInput}" excludes="${x.configFile}"/>
+            <zipfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
+            <zipfileset src="${x.jdkArchive}" prefix="${x.branding}"/>
         </zip>
 
         <antcall target="cleanup-scripts"/>
@@ -54,9 +45,9 @@
 
         <!-- merge bundleInput, config and jdk into binary -->
         <tar destfile="${x.bundleOutput}" compression="gzip" longfile="gnu">
-            <zipfileset src="${x.bundleInput}" excludes="${x.windowsScript},${x.unixScript}"/>
-            <tarfileset dir="${x.tempDirectory}" includes="${x.windowsScript},${x.unixScript}"/>
-            <tarfileset prefix="${x.baseDirectory}">
+            <zipfileset src="${x.bundleInput}" excludes="${x.configFile}"/>
+            <tarfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
+            <tarfileset prefix="${x.branding}">
                 <gzipresource>
                     <file file="${x.jdkArchive}"/>
                 </gzipresource>
