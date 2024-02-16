@@ -205,6 +205,14 @@
                                     <packageType>jre</packageType>
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
+                                <pkg>
+                                    <name>temurin-mac-aarch64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>mac-aarch64</platform>
+                                    <version>${java.bundled.version}</version>
+                                    <packageType>jre</packageType>
+                                    <archiveType>tar.gz</archiveType>
+                                </pkg>
                             </pkgs>
                             <unpack>false</unpack>
                         </configuration>
@@ -254,7 +262,7 @@
                                     <attribute name="extension"/>
                                     <attribute name="dir"/>
                                     <sequential>
-                                        <echo message="Bundling jwsacruncher with JDK @{platform}" level="info"/>
+                                        <echo message="Bundling jwsacruncher for @{platform}" level="info"/>
                                         <pathconvert property="temurin.@{platform}">
                                             <first>
                                                 <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
@@ -278,6 +286,7 @@
                                 <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
                                 <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
                                 <bundle-cli platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
+                                <bundle-cli platform="mac-aarch64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
                             </target>
                         </configuration>
                     </execution>
@@ -297,7 +306,7 @@
                                     <attribute name="extension"/>
                                     <attribute name="dir"/>
                                     <sequential>
-                                        <echo message="Bundling jdemetra with JDK @{platform}" level="info"/>
+                                        <echo message="Bundling jdemetra for @{platform}" level="info"/>
                                         <pathconvert property="temurin.@{platform}">
                                             <first>
                                                 <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
@@ -319,6 +328,7 @@
                                 <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
                                 <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
                                 <bundle-desktop platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
+                                <bundle-desktop platform="mac-aarch64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
                             </target>
                         </configuration>
                     </execution>
