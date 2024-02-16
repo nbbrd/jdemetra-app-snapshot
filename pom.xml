@@ -249,7 +249,9 @@
                                 <macrodef name="bundle-cli">
                                     <attribute name="platform"/>
                                     <attribute name="extension"/>
+                                    <attribute name="dir"/>
                                     <sequential>
+                                        <echo message="Bundling jwsacruncher with JDK @{platform}" level="info"/>
                                         <pathconvert property="temurin.@{platform}">
                                             <first>
                                                 <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
@@ -264,15 +266,15 @@
                                             <property name="x.baseDirectory"
                                                       value="jwsacruncher-${jdplus-main.version}"/>
                                             <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
-                                            <property name="x.jdkDirectory" value="${jdkname}"/>
+                                            <property name="x.jdkDirectory" value="@{dir}"/>
                                             <target name="bundle.@{extension}"/>
                                         </ant>
                                     </sequential>
                                 </macrodef>
 
-                                <bundle-cli platform="windows-x86_64" extension="zip"/>
-                                <bundle-cli platform="linux-x86_64" extension="tar.gz"/>
-                                <bundle-cli platform="mac-x86_64" extension="tar.gz"/>
+                                <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
+                                <bundle-cli platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
                             </target>
                         </configuration>
                     </execution>
@@ -290,7 +292,9 @@
                                 <macrodef name="bundle-desktop">
                                     <attribute name="platform"/>
                                     <attribute name="extension"/>
+                                    <attribute name="dir"/>
                                     <sequential>
+                                        <echo message="Bundling jdemetra with JDK @{platform}" level="info"/>
                                         <pathconvert property="temurin.@{platform}">
                                             <first>
                                                 <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
@@ -303,15 +307,15 @@
                                                       value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.@{extension}"/>
                                             <property name="x.branding" value="nbdemetra"/>
                                             <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
-                                            <property name="x.jdkDirectory" value="${jdkname}"/>
+                                            <property name="x.jdkDirectory" value="@{dir}"/>
                                             <target name="bundle.@{extension}"/>
                                         </ant>
                                     </sequential>
                                 </macrodef>
 
-                                <bundle-desktop platform="windows-x86_64" extension="zip"/>
-                                <bundle-desktop platform="linux-x86_64" extension="tar.gz"/>
-                                <bundle-desktop platform="mac-x86_64" extension="tar.gz"/>
+                                <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
+                                <bundle-desktop platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
                             </target>
                         </configuration>
                     </execution>
