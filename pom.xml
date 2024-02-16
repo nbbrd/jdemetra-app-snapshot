@@ -291,11 +291,15 @@
                                     </sequential>
                                 </macrodef>
 
-                                <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
-                                <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
-                                <bundle-cli platform="linux-aarch64" extension="tar.gz" dir="${jdkname}"/>
-                                <bundle-cli platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
-                                <bundle-cli platform="mac-aarch64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
+                                <parallel threadsPerProcessor="1">
+                                    <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                    <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
+                                    <bundle-cli platform="linux-aarch64" extension="tar.gz" dir="${jdkname}"/>
+                                    <bundle-cli platform="mac-x86_64" extension="tar.gz"
+                                                dir="${jdkname}/Contents/Home"/>
+                                    <bundle-cli platform="mac-aarch64" extension="tar.gz"
+                                                dir="${jdkname}/Contents/Home"/>
+                                </parallel>
                             </target>
                         </configuration>
                     </execution>
@@ -334,11 +338,15 @@
                                     </sequential>
                                 </macrodef>
 
-                                <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
-                                <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
-                                <bundle-desktop platform="linux-aarch64" extension="tar.gz" dir="${jdkname}"/>
-                                <bundle-desktop platform="mac-x86_64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
-                                <bundle-desktop platform="mac-aarch64" extension="tar.gz" dir="${jdkname}/Contents/Home"/>
+                                <parallel threadsPerProcessor="1">
+                                    <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                    <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
+                                    <bundle-desktop platform="linux-aarch64" extension="tar.gz" dir="${jdkname}"/>
+                                    <bundle-desktop platform="mac-x86_64" extension="tar.gz"
+                                                    dir="${jdkname}/Contents/Home"/>
+                                    <bundle-desktop platform="mac-aarch64" extension="tar.gz"
+                                                    dir="${jdkname}/Contents/Home"/>
+                                </parallel>
                             </target>
                         </configuration>
                     </execution>
