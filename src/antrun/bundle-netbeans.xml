@@ -17,8 +17,12 @@
                 <include name="${x.configFile}"/>
             </patternset>
         </unzip>
+
         <replace file="${x.tempDirectory}/${x.configFile}"
                  token="#jdkhome=&quot;/path/to/jdk&quot;" value="jdkhome=${x.jdkDirectory}"/>
+        <touch file="${x.tempDirectory}/${x.configFile}"
+               datetime="${project.build.outputTimestamp}"
+               pattern="yyyy-MM-dd'T'HH:mm:ssXXX"/>
     </target>
 
     <target name="cleanup-scripts">
