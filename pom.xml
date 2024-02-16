@@ -280,7 +280,7 @@
                                             <property name="x.bundleInput"
                                                       value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
                                             <property name="x.bundleOutput"
-                                                      value="${project.build.directory}/upload/jwsacruncher-standalone-${jdplus-main.version}-@{platform}.@{extension}"/>
+                                                      value="${project.build.directory}/upload/jwsacruncher-standalone-${jdplus-main.version}-@{platform}.zip"/>
                                             <property name="x.programId" value="jwsacruncher"/>
                                             <property name="x.baseDirectory"
                                                       value="jwsacruncher-${jdplus-main.version}"/>
@@ -325,7 +325,7 @@
                                             <property name="x.bundleInput"
                                                       value="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
                                             <property name="x.bundleOutput"
-                                                      value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.@{extension}"/>
+                                                      value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.zip"/>
                                             <property name="x.branding" value="nbdemetra"/>
                                             <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
                                             <property name="x.jdkDirectory" value="@{dir}"/>

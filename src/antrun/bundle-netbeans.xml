@@ -34,7 +34,7 @@
         <antcall target="process-scripts"/>
 
         <!-- merge bundleInput, config and jdk into binary -->
-        <zip destfile="${x.bundleOutput}">
+        <zip destfile="${x.bundleOutput}" keepcompression="true">
             <zipfileset src="${x.bundleInput}" excludes="${x.configFile}"/>
             <zipfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
             <zipfileset src="${x.jdkArchive}" prefix="${x.branding}"/>
@@ -51,11 +51,11 @@
         <gunzip src="${x.jdkArchive}" dest="${x.tempDirectory}/jdk.tar"/>
 
         <!-- merge bundleInput, config and jdk into binary -->
-        <tar destfile="${x.bundleOutput}" compression="gzip" longfile="gnu">
+        <zip destfile="${x.bundleOutput}" keepcompression="true">
             <zipfileset src="${x.bundleInput}" excludes="${x.configFile}"/>
-            <tarfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
+            <zipfileset dir="${x.tempDirectory}" includes="${x.configFile}"/>
             <tarfileset src="${x.tempDirectory}/jdk.tar" prefix="${x.branding}"/>
-        </tar>
+        </zip>
 
         <antcall target="cleanup-scripts"/>
     </target>

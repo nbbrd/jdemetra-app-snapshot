@@ -15,7 +15,7 @@ JDemetra+ v3 runs on any operating system that supports **Java 17 or later** suc
 
 These binaries provide their own Java runtime.
 
-1. **Download** the [platform-specific package](https://github.com/nbbrd/jdemetra-app-snapshot/releases) (`jdemetra-standalone-VERSION-PLATFORM`)
+1. **Download** the [platform-specific package](https://github.com/nbbrd/jdemetra-app-snapshot/releases) (`jdemetra-standalone-VERSION-PLATFORM.zip`)
 2. **Extract** it to any folder on your system (i.e. `DEMETRA_PATH`)
 3. **Run** the executable file `nbdemetra64.exe` located in the `DEMETRA_PATH/bin` directory
 
