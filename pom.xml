@@ -108,12 +108,45 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.simplify4u.plugins</groupId>
+                    <artifactId>pgpverify-maven-plugin</artifactId>
+                    <version>1.17.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.6.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jreleaser</groupId>
+                    <artifactId>jdks-maven-plugin</artifactId>
+                    <version>1.10.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.github.floverfelt</groupId>
+                    <artifactId>find-and-replace-maven-plugin</artifactId>
+                    <version>1.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <!-- 1. Check signatures and create timestamp -->
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
                 <artifactId>pgpverify-maven-plugin</artifactId>
-                <version>1.17.0</version>
                 <executions>
                     <execution>
                         <id>check-signatures</id>
@@ -132,7 +165,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>setup-timestamp</id>
@@ -153,7 +185,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <id>copy-plugins-and-binaries</id>
@@ -171,10 +202,9 @@
             <plugin>
                 <groupId>org.jreleaser</groupId>
                 <artifactId>jdks-maven-plugin</artifactId>
-                <version>1.10.0</version>
                 <executions>
                     <execution>
-                        <id>download-windows-jre</id>
+                        <id>download-jre</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>setup-disco</goal>
@@ -182,7 +212,7 @@
                         <configuration>
                             <pkgs>
                                 <pkg>
-                                    <name>temurin-windows-x86_64</name>
+                                    <name>jdk-windows-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
@@ -190,7 +220,7 @@
                                     <archiveType>zip</archiveType>
                                 </pkg>
                                 <pkg>
-                                    <name>temurin-linux-x86_64</name>
+                                    <name>jdk-linux-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-x86_64</platform>
                                     <version>${java.bundled.version}</version>
@@ -198,7 +228,7 @@
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
-                                    <name>temurin-linux-aarch_64</name>
+                                    <name>jdk-linux-aarch_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-aarch64</platform>
                                     <version>${java.bundled.version}</version>
@@ -206,7 +236,7 @@
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
-                                    <name>temurin-osx-x86_64</name>
+                                    <name>jdk-osx-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>osx-x86_64</platform>
                                     <version>${java.bundled.version}</version>
@@ -214,7 +244,7 @@
                                     <archiveType>tar.gz</archiveType>
                                 </pkg>
                                 <pkg>
-                                    <name>temurin-osx-aarch_64</name>
+                                    <name>jdk-osx-aarch_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>osx-aarch64</platform>
                                     <version>${java.bundled.version}</version>
@@ -232,7 +262,6 @@
             <plugin>
                 <groupId>io.github.floverfelt</groupId>
                 <artifactId>find-and-replace-maven-plugin</artifactId>
-                <version>1.1.0</version>
                 <executions>
                     <execution>
                         <id>add-timestamp-to-filenames</id>
@@ -252,7 +281,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>pack-cli-binaries</id>
@@ -270,10 +298,10 @@
                                     <attribute name="extension"/>
                                     <attribute name="dir"/>
                                     <sequential>
-                                        <echo message="Bundling jwsacruncher for @{platform}" level="info"/>
-                                        <pathconvert property="temurin.@{platform}">
+                                        <echo message="Bundling @{platform}" level="info"/>
+                                        <pathconvert property="jdk.@{platform}">
                                             <first>
-                                                <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
+                                                <fileset dir="${project.build.directory}/jdks/jdk-@{platform}"/>
                                             </first>
                                         </pathconvert>
                                         <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
@@ -284,7 +312,7 @@
                                             <property name="x.programId" value="jwsacruncher"/>
                                             <property name="x.baseDirectory"
                                                       value="jwsacruncher-${jdplus-main.version}"/>
-                                            <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
+                                            <property name="x.jdkArchive" value="${jdk.@{platform}}"/>
                                             <property name="x.jdkDirectory" value="@{dir}"/>
                                             <target name="bundle.@{extension}"/>
                                         </ant>
@@ -319,10 +347,10 @@
                                     <attribute name="extension"/>
                                     <attribute name="dir"/>
                                     <sequential>
-                                        <echo message="Bundling jdemetra for @{platform}" level="info"/>
-                                        <pathconvert property="temurin.@{platform}">
+                                        <echo message="Bundling @{platform}" level="info"/>
+                                        <pathconvert property="jdk.@{platform}">
                                             <first>
-                                                <fileset dir="${project.build.directory}/jdks/temurin-@{platform}"/>
+                                                <fileset dir="${project.build.directory}/jdks/jdk-@{platform}"/>
                                             </first>
                                         </pathconvert>
                                         <ant antfile="${project.basedir}/src/antrun/bundle-netbeans.xml">
@@ -331,7 +359,7 @@
                                             <property name="x.bundleOutput"
                                                       value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.zip"/>
                                             <property name="x.branding" value="nbdemetra"/>
-                                            <property name="x.jdkArchive" value="${temurin.@{platform}}"/>
+                                            <property name="x.jdkArchive" value="${jdk.@{platform}}"/>
                                             <property name="x.jdkDirectory" value="@{dir}"/>
                                             <target name="bundle.@{extension}"/>
                                         </ant>
