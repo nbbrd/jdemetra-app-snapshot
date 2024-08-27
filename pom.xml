@@ -14,10 +14,10 @@
 
         <java.bundled.version>jdk-21.0.2+13</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
-        <jdplus-main.version>3.2.3-SNAPSHOT</jdplus-main.version>
+        <jdplus-main.version>3.2.5-SNAPSHOT</jdplus-main.version>
         <jdplus-sdmx.version>3.1.1-SNAPSHOT</jdplus-sdmx.version>
-        <jdplus-benchmarking.version>1.2.0-SNAPSHOT</jdplus-benchmarking.version>
-        <jdplus-incubator.version>2.1.1-SNAPSHOT</jdplus-incubator.version>
+        <jdplus-benchmarking.version>1.2.2-SNAPSHOT</jdplus-benchmarking.version>
+        <jdplus-incubator.version>2.2.1-SNAPSHOT</jdplus-incubator.version>
     </properties>
 
     <dependencies>
