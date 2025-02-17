@@ -18,18 +18,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
+      - name: Checkout and Setup Maven
+        uses: s4u/setup-maven-action@v1.18.0
         with:
-          submodules: true
-          fetch-depth: 0
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
+          checkout-submodules: true
+          checkout-fetch-depth: 0
           java-version: ${{ matrix.java }}
-          cache: 'maven'
 
       - name: Create assets
         run: |
