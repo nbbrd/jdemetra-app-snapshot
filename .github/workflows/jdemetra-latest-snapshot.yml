@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: '0 2 * * *' # run at 2 AM UTC
 
+env:
+  MAVEN_ARGS: "-B -ntp"
+
 jobs:
   snapshot-job:
     if: startsWith(github.repository, 'nbbrd/') && startsWith(github.ref, 'refs/heads/main')
@@ -27,7 +30,7 @@ jobs:
 
       - name: Create assets
         run: |
-          mvn -B -ntp clean package
+          mvn clean package
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
