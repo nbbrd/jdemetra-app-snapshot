@@ -12,12 +12,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
 
-        <java.bundled.version>jdk-21.0.6+7</java.bundled.version>
+        <java.bundled.version>jdk-21.0.7+6</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
-        <jdplus-main.version>3.4.1-SNAPSHOT</jdplus-main.version>
+        <jdplus-main.version>3.5.1-SNAPSHOT</jdplus-main.version>
         <jdplus-sdmx.version>3.3.1-SNAPSHOT</jdplus-sdmx.version>
-        <jdplus-benchmarking.version>1.2.2-SNAPSHOT</jdplus-benchmarking.version>
-        <jdplus-incubator.version>2.2.1-SNAPSHOT</jdplus-incubator.version>
+        <jdplus-benchmarking.version>2.0.2-SNAPSHOT</jdplus-benchmarking.version>
+        <jdplus-incubator.version>2.3.1-SNAPSHOT</jdplus-incubator.version>
     </properties>
 
     <dependencies>
