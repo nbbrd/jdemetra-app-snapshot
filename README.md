@@ -15,7 +15,7 @@ JDemetra+ v3 runs on any operating system that supports **Java 17 or later** suc
 
 This binary provides its own Java runtime.
 
-1. **Download** the [platform-specific package](https://github.com/nbbrd/jdemetra-app-snapshot/releases) (`jdemetra-standalone-VERSION-PLATFORM.zip`)
+1. **Download** the [platform-specific package](https://github.com/nbbrd/jdemetra-app-snapshot/releases/tag/latest) (`jdemetra-standalone-VERSION-PLATFORM.zip`)
     
     | `PLATFORM`  | Intel            | Arm              |
     |:-----------:|------------------|------------------|
