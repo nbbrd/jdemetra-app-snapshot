@@ -30,7 +30,7 @@ jobs:
 
       - name: Create assets
         run: |
-          mvn clean package
+          mvn -U clean package
 
       - name: Create release and upload assets
         uses: ncipollo/release-action@v1
