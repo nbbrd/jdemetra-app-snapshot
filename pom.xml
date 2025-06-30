@@ -220,6 +220,14 @@
                                     <archiveType>zip</archiveType>
                                 </pkg>
                                 <pkg>
+                                    <name>jdk-windows-aarch_64</name>
+                                    <distribution>temurin</distribution>
+                                    <platform>windows-aarch64</platform>
+                                    <version>${java.bundled.version}</version>
+                                    <packageType>jre</packageType>
+                                    <archiveType>zip</archiveType>
+                                </pkg>
+                                <pkg>
                                     <name>jdk-linux-x86_64</name>
                                     <distribution>temurin</distribution>
                                     <platform>linux-x86_64</platform>
@@ -321,6 +329,7 @@
 
                                 <parallel threadsPerProcessor="1">
                                     <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                    <bundle-cli platform="windows-aarch_64" extension="zip" dir="${jdkname}"/>
                                     <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
                                     <bundle-cli platform="linux-aarch_64" extension="tar.gz" dir="${jdkname}"/>
                                     <bundle-cli platform="osx-x86_64" extension="tar.gz"
@@ -368,6 +377,7 @@
 
                                 <parallel threadsPerProcessor="1">
                                     <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
+                                    <bundle-desktop platform="windows-aarch_64" extension="zip" dir="${jdkname}"/>
                                     <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
                                     <bundle-desktop platform="linux-aarch_64" extension="tar.gz" dir="${jdkname}"/>
                                     <bundle-desktop platform="osx-x86_64" extension="tar.gz"
