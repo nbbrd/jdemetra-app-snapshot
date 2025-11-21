@@ -14,7 +14,7 @@
 
         <java.bundled.version>jdk-21.0.7+6</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
-        <jdplus-main.version>3.5.2-SNAPSHOT</jdplus-main.version>
+        <jdplus-main.version>3.6.0</jdplus-main.version>
         <jdplus-sdmx.version>3.3.3-SNAPSHOT</jdplus-sdmx.version>
         <jdplus-benchmarking.version>2.0.2-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>2.3.1-SNAPSHOT</jdplus-incubator.version>
