@@ -7,7 +7,7 @@ _Note that this snapshot is available for test only and should not be used in pr
 
 ## Requirements
 
-JDemetra+ v3 runs on any operating system that supports **Java 17 or later** such as Microsoft **Windows**, **Solaris** OS, Apple **macOS**, **Ubuntu** and other various **Linux** distributions.
+JDemetra+ v3 runs on any operating system that supports **Java 21 or later** such as Microsoft **Windows**, **Solaris** OS, Apple **macOS**, **Ubuntu** and other various **Linux** distributions.
 
 ## Installation
 
@@ -30,7 +30,7 @@ This binary provides its own Java runtime.
 
 This binary requires an external Java runtime.
 
-1. **Install** [Java version 17 or later](https://whichjdk.com/)
+1. **Install** [Java version 21 or later](https://whichjdk.com/)
 2. **Download** the [platform-independent package](https://github.com/nbbrd/jdemetra-app-snapshot/releases) (`jdemetra-VERSION.zip`)
 3. **Extract** it to any folder on your system (i.e. `DEMETRA_PATH`)
 4. **Run** the executable file located in the `DEMETRA_PATH/bin` directory
