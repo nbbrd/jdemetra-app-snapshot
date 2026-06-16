@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
 
-        <java.bundled.version>jdk-21.0.7+6</java.bundled.version>
+        <java.bundled.version>jdk-21.0.11+10</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
         <jdplus-main.version>3.7.2-SNAPSHOT</jdplus-main.version>
         <jdplus-sdmx.version>3.3.5-SNAPSHOT</jdplus-sdmx.version>
@@ -225,7 +225,7 @@
                             <pkgs>
                                 <pkg>
                                     <name>jdk-windows-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -233,7 +233,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-windows-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>windows-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -241,7 +241,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-linux-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>linux-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -249,7 +249,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-linux-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>linux-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -257,7 +257,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-osx-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>osx-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -265,7 +265,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-osx-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>osx-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
