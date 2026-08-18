@@ -18,6 +18,7 @@
         <jdplus-sdmx.version>3.4.1-SNAPSHOT</jdplus-sdmx.version>
         <jdplus-benchmarking.version>2.2.1-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>2.5.3-SNAPSHOT</jdplus-incubator.version>
+        <jdplus-eurostat.version>3.0.0-SNAPSHOT</jdplus-eurostat.version>
     </properties>
 
     <dependencies>
@@ -108,7 +109,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sat</groupId>
             <artifactId>jdplus-jvsqr-desktop-plugin</artifactId>
-            <version>${jdplus-incubator.version}</version>
+            <version>${jdplus-eurostat.version}</version>
             <type>nbm</type>
             <exclusions>
                 <exclusion>
