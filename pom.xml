@@ -124,6 +124,7 @@
             <artifactId>jdplus-ws</artifactId>
             <version>${jdplus-ws.version}</version>
             <type>jar</type>
+            <classifier>runner</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
