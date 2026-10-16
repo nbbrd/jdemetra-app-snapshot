@@ -15,7 +15,6 @@
         <java.bundled.version>jdk-21.0.11+10</java.bundled.version>
         <jdkname>${java.bundled.version}-jre</jdkname>
         <jdplus-main.version>3.9.1-SNAPSHOT</jdplus-main.version>
-        <jdplus-sdmx.version>3.5.1-SNAPSHOT</jdplus-sdmx.version>
         <jdplus-benchmarking.version>2.2.1-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>2.5.3-SNAPSHOT</jdplus-incubator.version>
         <jdplus-eurostat.version>3.0.1-SNAPSHOT</jdplus-eurostat.version>
@@ -40,18 +39,6 @@
             <artifactId>jdplus-main-cli-bin</artifactId>
             <version>${jdplus-main.version}</version>
             <type>zip</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.nbbrd.jdplus-sdmx</groupId>
-            <artifactId>jdplus-sdmx-desktop-plugin</artifactId>
-            <version>${jdplus-sdmx.version}</version>
-            <type>nbm</type>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
