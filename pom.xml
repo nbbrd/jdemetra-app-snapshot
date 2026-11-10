@@ -12,8 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
 
-        <java.bundled.version>jdk-21.0.11+10</java.bundled.version>
-        <jdkname>${java.bundled.version}-jre</jdkname>
+        <java.bundled.version>25.0.5+1</java.bundled.version>
         <jdplus-main.version>3.9.1-SNAPSHOT</jdplus-main.version>
         <jdplus-benchmarking.version>2.2.1-SNAPSHOT</jdplus-benchmarking.version>
         <jdplus-incubator.version>2.5.3-SNAPSHOT</jdplus-incubator.version>
@@ -161,6 +160,11 @@
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>3.2.0</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.github.nbbrd.nbbrd-maven-tools</groupId>
+                    <artifactId>bundle-maven-plugin</artifactId>
+                    <version>1.5.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -234,7 +238,7 @@
                             <pkgs>
                                 <pkg>
                                     <name>jdk-windows-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>windows-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -242,7 +246,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-windows-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>windows-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -250,7 +254,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-linux-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>linux-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -258,7 +262,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-linux-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>linux-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -266,7 +270,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-osx-x86_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>osx-x86_64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -274,7 +278,7 @@
                                 </pkg>
                                 <pkg>
                                     <name>jdk-osx-aarch_64</name>
-                                    <distribution>temurin</distribution>
+                                    <distribution>zulu</distribution>
                                     <platform>osx-aarch64</platform>
                                     <version>${java.bundled.version}</version>
                                     <packageType>jre</packageType>
@@ -288,6 +292,65 @@
             </plugin>
 
             <!-- 3. Create binaries bundled with JRE -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>rename-binaries</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <move file="${project.build.directory}/upload/jdplus-main-cli-bin-${jdplus-main.version}.zip"
+                                      tofile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
+                                <move file="${project.build.directory}/upload/jdplus-main-desktop-bin-${jdplus-main.version}.zip"
+                                      tofile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.nbbrd.nbbrd-maven-tools</groupId>
+                <artifactId>bundle-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>pack-cli-binaries</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>bundle-jdk</goal>
+                        </goals>
+                        <configuration>
+                            <inputFile>${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip</inputFile>
+                            <applicationRoot>jwsacruncher-${jdplus-main.version}</applicationRoot>
+                            <launcherId>appassembler</launcherId>
+                            <appName>jwsacruncher</appName>
+                            <archivePathTemplate>${project.build.directory}/jdks/jdk-{id}</archivePathTemplate>
+                            <outputFileTemplate>${project.build.directory}/upload/jwsacruncher-standalone-${jdplus-main.version}-{id}.zip</outputFileTemplate>
+                            <runtimeIds>windows-x86_64,windows-aarch_64,linux-x86_64,linux-aarch_64,osx-x86_64,osx-aarch_64</runtimeIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pack-desktop-binaries</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>bundle-jdk</goal>
+                        </goals>
+                        <configuration>
+                            <inputFile>${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip</inputFile>
+                            <applicationRoot>nbdemetra</applicationRoot>
+                            <launcherId>netbeans</launcherId>
+                            <appName>nbdemetra</appName>
+                            <archivePathTemplate>${project.build.directory}/jdks/jdk-{id}</archivePathTemplate>
+                            <outputFileTemplate>${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-{id}.zip</outputFileTemplate>
+                            <runtimeIds>windows-x86_64,windows-aarch_64,linux-x86_64,linux-aarch_64,osx-x86_64,osx-aarch_64</runtimeIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>io.github.floverfelt</groupId>
                 <artifactId>find-and-replace-maven-plugin</artifactId>
@@ -303,110 +366,6 @@
                             <baseDir>target/upload/</baseDir>
                             <findRegex>-SNAPSHOT</findRegex>
                             <replaceValue>-SNAPSHOT+${timestamp}</replaceValue>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pack-cli-binaries</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <move file="${project.build.directory}/upload/jdplus-main-cli-bin-${jdplus-main.version}.zip"
-                                      tofile="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
-
-                                <macrodef name="bundle-cli">
-                                    <attribute name="platform"/>
-                                    <attribute name="extension"/>
-                                    <attribute name="dir"/>
-                                    <sequential>
-                                        <echo message="Bundling @{platform}" level="info"/>
-                                        <pathconvert property="jdk.@{platform}">
-                                            <first>
-                                                <fileset dir="${project.build.directory}/jdks/jdk-@{platform}"/>
-                                            </first>
-                                        </pathconvert>
-                                        <ant antfile="${project.basedir}/src/antrun/bundle-appassembler.xml">
-                                            <property name="x.bundleInput"
-                                                      value="${project.build.directory}/upload/jwsacruncher-${jdplus-main.version}.zip"/>
-                                            <property name="x.bundleOutput"
-                                                      value="${project.build.directory}/upload/jwsacruncher-standalone-${jdplus-main.version}-@{platform}.zip"/>
-                                            <property name="x.programId" value="jwsacruncher"/>
-                                            <property name="x.baseDirectory"
-                                                      value="jwsacruncher-${jdplus-main.version}"/>
-                                            <property name="x.jdkArchive" value="${jdk.@{platform}}"/>
-                                            <property name="x.jdkDirectory" value="@{dir}"/>
-                                            <target name="bundle.@{extension}"/>
-                                        </ant>
-                                    </sequential>
-                                </macrodef>
-
-                                <parallel threadsPerProcessor="1">
-                                    <bundle-cli platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
-                                    <bundle-cli platform="windows-aarch_64" extension="zip" dir="${jdkname}"/>
-                                    <bundle-cli platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
-                                    <bundle-cli platform="linux-aarch_64" extension="tar.gz" dir="${jdkname}"/>
-                                    <bundle-cli platform="osx-x86_64" extension="tar.gz"
-                                                dir="${jdkname}/Contents/Home"/>
-                                    <bundle-cli platform="osx-aarch_64" extension="tar.gz"
-                                                dir="${jdkname}/Contents/Home"/>
-                                </parallel>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>pack-desktop-binaries</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <move file="${project.build.directory}/upload/jdplus-main-desktop-bin-${jdplus-main.version}.zip"
-                                      tofile="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
-
-                                <macrodef name="bundle-desktop">
-                                    <attribute name="platform"/>
-                                    <attribute name="extension"/>
-                                    <attribute name="dir"/>
-                                    <sequential>
-                                        <echo message="Bundling @{platform}" level="info"/>
-                                        <pathconvert property="jdk.@{platform}">
-                                            <first>
-                                                <fileset dir="${project.build.directory}/jdks/jdk-@{platform}"/>
-                                            </first>
-                                        </pathconvert>
-                                        <ant antfile="${project.basedir}/src/antrun/bundle-netbeans.xml">
-                                            <property name="x.bundleInput"
-                                                      value="${project.build.directory}/upload/jdemetra-${jdplus-main.version}.zip"/>
-                                            <property name="x.bundleOutput"
-                                                      value="${project.build.directory}/upload/jdemetra-standalone-${jdplus-main.version}-@{platform}.zip"/>
-                                            <property name="x.branding" value="nbdemetra"/>
-                                            <property name="x.jdkArchive" value="${jdk.@{platform}}"/>
-                                            <property name="x.jdkDirectory" value="@{dir}"/>
-                                            <target name="bundle.@{extension}"/>
-                                        </ant>
-                                    </sequential>
-                                </macrodef>
-
-                                <parallel threadsPerProcessor="1">
-                                    <bundle-desktop platform="windows-x86_64" extension="zip" dir="${jdkname}"/>
-                                    <bundle-desktop platform="windows-aarch_64" extension="zip" dir="${jdkname}"/>
-                                    <bundle-desktop platform="linux-x86_64" extension="tar.gz" dir="${jdkname}"/>
-                                    <bundle-desktop platform="linux-aarch_64" extension="tar.gz" dir="${jdkname}"/>
-                                    <bundle-desktop platform="osx-x86_64" extension="tar.gz"
-                                                    dir="${jdkname}/Contents/Home"/>
-                                    <bundle-desktop platform="osx-aarch_64" extension="tar.gz"
-                                                    dir="${jdkname}/Contents/Home"/>
-                                </parallel>
-                            </target>
                         </configuration>
                     </execution>
                 </executions>
